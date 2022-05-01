@@ -1,2 +1,2 @@
 # PowerShell-Module
-PowerShell modules developed for automating certain tasks in Windows environnement.
+PowerShell modules developed for automating certain tasks in Windows environement.
