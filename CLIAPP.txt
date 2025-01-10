@@ -1,0 +1,61 @@
+# Static Banner
+function Show-Banner {
+    Clear-Host
+    Write-Host "=== Welcome to the CLI Application ===" -ForegroundColor Cyan
+    Write-Host "=======================================" -ForegroundColor Cyan
+}
+
+# Authentication
+function Authenticate-User {
+    do {
+        $username = Read-Host "Enter Username"
+        $password = Read-Host "Enter Password" -AsSecureString
+        # Dummy auth logic (replace with your own logic)
+        if ($username -eq "admin" -and ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password))) -eq "password") {
+            return $true
+        } else {
+            Write-Host "Authentication failed. Try again." -ForegroundColor Red
+        }
+    } while ($true)
+}
+
+# Refresh Table
+function Refresh-Table {
+    $Data = Import-Csv -Path "data.csv"
+    Clear-DynamicSection
+    Write-Host "ID  TYPE  TARGET  COUNT  MEDIA  STATUS"
+    foreach ($row in $Data) {
+        Write-Host "$($row.ID) $($row.TYPE) $($row.TARGET) $($row.COUNT) $($row.MEDIA) $($row.STATUS)"
+    }
+}
+
+# Main Menu
+function Show-Menu {
+    Write-Host "1. Option 1"
+    Write-Host "2. Option 2"
+    Write-Host "3. Exit"
+    $choice = Read-Host "Enter your choice"
+    switch ($choice) {
+        "1" { Write-Host "Option 1 selected" }
+        "2" { Write-Host "Option 2 selected" }
+        "3" { exit }
+        default { Write-Host "Invalid choice!" }
+    }
+}
+
+# Clear Dynamic Section
+function Clear-DynamicSection {
+    # Logic to clear the lower part of the console
+    [Console]::SetCursorPosition(0, 3)  # Adjust starting position
+    [Console]::Clear()
+}
+
+# Main Logic
+Show-Banner
+if (Authenticate-User) {
+    while ($true) {
+        Refresh-Table
+        Show-Menu
+    }
+}
+
