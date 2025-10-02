@@ -1,0 +1,31 @@
+# Sample list of strings
+$strings = @(
+    "file123",
+    "document45temp",
+    "report99v2",
+    "log789",
+    "data12file",
+    "image007"
+)
+
+# Process each string
+$processedStrings = foreach ($str in $strings) {
+    # Use regex to find the last sequence of digits
+    if ($str -match "(\d+)(?!.*\d)") {
+        $lastNumberIndex = $str.LastIndexOf($matches[1])
+        # Check if the number is at the end
+        if ($lastNumberIndex + $matches[1].Length -eq $str.Length) {
+            # String ends with a number; keep as is
+            $str
+        } else {
+            # Trim everything after the last number
+            $str.Substring(0, $lastNumberIndex + $matches[1].Length)
+        }
+    } else {
+        # No number found; optionally handle it, e.g., skip or keep unchanged
+        $null
+    }
+}
+
+# Output the result
+$processedStrings
